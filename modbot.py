@@ -35,10 +35,10 @@ def log_request(req_type, num_reqs=1):
 
 def perform_action(subreddit, item, condition, matchobj):
     """Performs the action for the condition(s).
-    
+
     Also delivers the comment (if set) and creates an ActionLog entry.
     """
-    
+
     global r
     disclaimer = ('\n\n*[I am a bot](http://www.reddit.com/r/AutoModerator/'
                     'comments/q11pu/what_is_automoderator/), and this action '
@@ -50,7 +50,7 @@ def perform_action(subreddit, item, condition, matchobj):
     # build the comment if multiple conditions were matched
     if isinstance(condition, list):
         comment = ''
-        if any([c.comment for c in condition]):
+        if any(c.comment for c in condition):
             for c in condition:
                 if c.comment:
                     comment += '* '+c.comment+'\n'
@@ -210,7 +210,7 @@ def check_items(name, items, sr_dict, cond_dict, stop_time):
                     [c for c in conditions if c.action == 'remove']):
                 continue
 
-            # check set_flair conditions 
+            # check set_flair conditions
             check_conditions(subreddit, item,
                     [c for c in conditions if c.action == 'set_flair'])
 
@@ -254,7 +254,7 @@ def check_items(name, items, sr_dict, cond_dict, stop_time):
                     session.commit()
                     logging.info('  Re-approved %s', entry.permalink)
                     log_request('reapprove')
-                            
+
         session.commit()
     except Exception as e:
         logging.error('  ERROR: %s', e)
@@ -326,7 +326,7 @@ def check_conditions(subreddit, item, conditions):
 
 def check_condition(item, condition):
     """Checks an item against a single condition (and sub-conditions).
-    
+
     Returns the MatchObject from the re if condition satisfied, or returns
     None if not.
     """
@@ -594,7 +594,7 @@ def get_user_info(username, condition):
             cached.created_utc = timegm(cache_row.created_utc.timetuple())
             cached.link_karma = cache_row.link_karma
             cached.comment_karma = cache_row.comment_karma
-            
+
             return cached
     except NoResultFound:
         cache_row = UserCache()
